@@ -4,13 +4,16 @@ import cors from 'cors';
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
-app.get('/api/message', (req, res) => {
+app.post('/api/message', (req, res) => {
+    console.log('received: ', req.body)
+
     res.json({
-        message: 'Hello from the backend!'
-    });
-});
+        message: 'I received your request!'
+    })
+})
 
 app.listen(8000, () => {
-    console.log('Server running on port 8000');
-});
+    console.log('Server is running on port 8000')
+})

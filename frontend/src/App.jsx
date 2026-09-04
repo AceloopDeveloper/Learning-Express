@@ -1,26 +1,33 @@
 import { useState } from 'react';
 
 function App() {
+    
     const [message, setMessage] = useState('');
 
-    const getMessage = () => {
-        fetch('http://localhost:8000/api/message')
-            .then(response => response.json())
-            .then(data => {
-                setMessage(data.message);
-            });
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch('http://localhost:8000/api/message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                message: message })
+        });
+
+        const data = await response.json();
+        console.log(data);
+
     };
-
-    return (
-        <div>
-            <h1>Frontend</h1>
-
-            <button onClick={getMessage}>
-                Get Message
-            </button>
-
-            <p>{message}</p>
-        </div>
+    return(
+        <form onSubmit={handleSubmit}>
+            <input type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            />
+            <button type='submit'>Submit</button>
+        </form>
     );
 }
 
